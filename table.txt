@@ -1,0 +1,110 @@
+Arujá 01.jpg
+	Arujá 	96,11 	92 453 	2 874,464 	0,784
+alto
+Alphaville Barueri SP.jpg
+	Barueri 	65,69 	279 704 	44 118 662 	0,786
+alto
+Pracabiritiba.jpg
+	Biritiba Mirim 	317,41 	33 265 	569.093 	0,712
+alto
+CaieirasSul.JPG
+	Caieiras 	96,10 	104 044 	2 815 657 	0,781
+alto
+Cajamar-SP.jpg
+	Cajamar 	131,33 	79 034 	8 728 427 	0,728
+alto
+	Carapicuíba 	34,97 	405 375 	5 214 112 	0,749
+alto
+Cotia.jpg
+	Cotia 	324,01 	257 882 	9 883 959 	0,780
+alto
+Diadema Centro.png
+	Diadema[16] 	30,80 	429 550 	13 428 069 	0,757
+alto
+Rua Padre Belchior Pontes, Embu 02.JPG
+	Embu das Artes 	70,39 	279 264 	8 106 457 	0,735
+alto
+Entrada da cidadde de Embu-Guaçu.jpg
+	Embu-Guaçu 	155,63 	70 402 	866 632 	0,749
+alto
+Entrada de ferraz.jpg
+	Ferraz de Vasconcelos 	29,57 	198 661 	2 592 684 	0,738
+alto
+Francisco Morato.png
+	Francisco Morato 	49,07 	179 372 	1 221 496 	0,703
+alto
+FrancoDaRocha.JPG
+	Franco da Rocha 	133,931 	158 438 	2 326 997 	0,731
+alto
+Igreja Matriz de Guararema.jpg 	Guararema 	270,82 	30 465 	1 686 845 	0,731
+alto
+Vista da cidade de Guarulhos (SP).JPG 	Guarulhos 	318,68 	1 404 694 	49 392 842 	0,763
+alto
+Igreja matriz de Itapecerica da Serra.jpg
+	Itapecerica da Serra 	150,87 	179 574 	3 138 820 	0,742
+alto
+Centro de Itapevi.jpg
+	Itapevi 	82,66 	244 131 	8 506 280 	0,735
+alto
+Igreja matriz de Itaquaquecetuba.jpg
+	Itaquaquecetuba 	82,61 	379 082 	5 060 802 	0,714
+alto
+Vista condominio belas artes desde estacion jandira.JPG
+	Jandira 	17,45 	127 734 	2 907 439 	0,760
+alto
+	Juquitiba 	522,18 	31 844 	419 064 	0,709
+alto
+Mairipora sp brasil.jpg
+	Mairiporã 	320,70 	103 645 	1 454 761 	0,788
+alto
+Ficheiro:MauáSP.jpg
+	Mauá 	61,87 	481 725 	10 220 780 	0,766
+alto
+Vista de Mogi das Cruzes a partir do Pico do Urubu.JPG
+	Mogi das Cruzes 	712,67 	455 587 	12 917 527 	0,783
+alto
+Caio Badner - Osasco.JPG
+	Osasco 	64,95 	701 428 	55 515 707 	0,776
+alto
+Pirapora do Bom Jesus.jpg
+	Pirapora do Bom Jesus 	108,52 	19 453 	323 919 	0,727
+alto
+Vista de poá.jpg
+	Poá 	17,26 	119 221 	5 263 923 	0,771
+alto
+Igreja Matriz de Ribeirão Pires.jpg
+	Ribeirão Pires 	99,12 	125 238 	2 660 355 	0,784
+alto
+Rio Grande da Serra, SP, Brazil - panoramio.jpg
+	Rio Grande da Serra 	36,34 	52 009 	521 263 	0,749
+alto
+Vista geral de Salesópolis.jpg
+	Salesópolis 	425,00 	17 363 	164 971 	0,732
+alto
+08-07-09 141619 sisabel vista do mirante I.jpg
+	Santa Isabel 	363,30 	58 529 	1 309 914 	0,738
+alto
+Centro velho de Santana do Parnaíba.jpg
+	Santana de Parnaíba 	179,93 	145 073 	7 373 603 	0,814
+muito alto
+Paço Municipal De Santo André.jpg
+	Santo André 	175,78 	723 889 	25 027 925 	0,815
+muito alto
+Visão Panorâmica de São Bernardo do Campo.jpg
+	São Bernardo do Campo 	409,48 	849 874 	47 668 531 	0,805
+muito alto
+São Caetano do Sul - tecidos urbanos.JPG
+	São Caetano do Sul 	15,33 	162 763 	15 306 267 	0,862
+muito alto
+	São Lourenço da Serra 	186,33 	16 127 	220 531 	0,728
+alto
+São Paulo city (Bela Vista).jpg
+	São Paulo 	1 521,10 	12 396 372 	570 706 192 	0,805
+muito alto
+Suzano tiete.jpg
+	Suzano 	206,20 	303 397 	8 998 633 	0,765
+alto
+Taboão da Serra.jpg
+	Taboão da Serra 	20,39 	297 528 	7 375 289 	0,769
+alto
+	Vargem Grande Paulista
