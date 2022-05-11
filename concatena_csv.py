@@ -1,7 +1,7 @@
 import glob
 import os
 import pandas as pd
-
+from extract_cities import extract_cities
 
 def concatena_tabelas(combustivel):
     first = None
@@ -33,6 +33,13 @@ def concatena_tabelas(combustivel):
         table.insert(0, 'Município', new_city_name.split("/")[1])
         table.insert(1, 'Estado', 'São Paulo')
         table.insert(2, 'Combustível', new_city_name.split("/")[0])
+
+        city_list = extract_cities('table.txt')
+
+        if new_city_name.split("/")[1] in city_list:
+            table.insert(5, 'Região', 'Metrópole')
+        else:
+            table.insert(5, 'Região', 'Interior')
 
         without_NaN = table.dropna()[1:]
         new_table = without_NaN.reset_index(drop=True)
