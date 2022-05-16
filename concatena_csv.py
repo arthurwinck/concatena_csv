@@ -15,7 +15,7 @@ def concatena_tabelas(combustivel):
 
     
     for filename in glob.glob(combustivel + '/*.csv'):
-        table = pd.read_csv(filename)
+        table = pd.read_csv(filename, encoding='latin-1')
         table.columns = ['RAZÃO SOCIAL', 'ENDEREÇO', 'BAIRRO', 'BANDEIRA','PREÇO VENDA','DATA COLETA']
         table.drop('RAZÃO SOCIAL',inplace=True, axis=1) # Deleta uma coluna
         table.drop('DATA COLETA', inplace=True, axis=1)
@@ -72,7 +72,7 @@ def concatena_tabelas(combustivel):
             #converter pra string checar quantos caracteres tem e dale --> ruim e lento :(
             # Fazer o log de 10 do número -> rápido mas tem que botar biblioteca :)
 
-            #np.log10(15000) -> 4.056234
+             #np.log10(15000) -> 4.056234
             decimal_houses = np.round(np.log10(new_table['PREÇO VENDA'][i])) 
             new_table['PREÇO VENDA'][i] = new_table['PREÇO VENDA'][i]*10**(3-decimal_houses)/10**2
 
@@ -98,4 +98,4 @@ def concatena_csv(lista_combustivel):
     final_table.to_csv('resultado.csv')
     print(final_table)
 
-concatena_csv(['diesel', 'diesel_s10'])
+concatena_csv(['gasolina_comum', 'gasolina_aditivada'])

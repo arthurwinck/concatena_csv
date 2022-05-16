@@ -33,18 +33,17 @@ def cria_modelo(filename, comb1, comb2):
 
 
     ## Reseting index 
-    freq_table_final.reset_index(inplace=True)
+    #freq_table_final.reset_index(inplace=True)
 
     ## Renaming columns
     freq_table_final.rename(columns={'index' : 'Range'}, inplace = True)
 
     #freq_table_final.insert(1, 'Contagem')
     freq_table_final['Contagem'] = frequency_table['Frequência'].copy()
-    
 
-    # for i, row in freq_table_final.iterrows():
-    #     ifor_val = '|'* freq_table_final['Frequência'][i]
-    #     freq_table_final.loc[i,'Contagem'] = ifor_val
+    for i, row in freq_table_final.iterrows():
+        ifor_val = '|'* freq_table_final['Frequência'][i]
+        freq_table_final.loc[i,'Contagem'] = ifor_val
 
     #cols = freq_table_final.columns.tolist()
     #cols = [cols[0], cols[3], cols[1], cols[2]]
