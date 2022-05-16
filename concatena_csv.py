@@ -50,7 +50,7 @@ def concatena_tabelas(combustivel):
 
         # Renomear bandeiras para entrar no padrão de nacional ou outro
         for i in range(len(table['BANDEIRA'])):
-            if table['BANDEIRA'][i] in ['VIBRA ENERGIA','VIBRASAT','IPIRANGA','TAURUS']:
+            if table['BANDEIRA'][i] in ['VIBRA ENERGIA','VIBRASAT','IPIRANGA','TAURUS','ALESAT']:
                 table['BANDEIRA'][i] = "NACIONAL"
             else:
                 table['BANDEIRA'][i] = "OUTRO"
