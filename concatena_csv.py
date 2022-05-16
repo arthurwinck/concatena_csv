@@ -98,4 +98,4 @@ def concatena_csv(lista_combustivel):
     final_table.to_csv('resultado.csv')
     print(final_table)
 
-concatena_csv(['gasolina_comum', 'gasolina_aditivada'])
+concatena_csv(['diesel', 'diesel_s10'])

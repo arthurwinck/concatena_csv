@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def cria_modelo(filename, comb1, comb2):
+def cria_modelo(filename, comb):
     table = pd.read_csv(filename)
     
     
@@ -16,7 +16,8 @@ def cria_modelo(filename, comb1, comb2):
     c = n/k # -> só pra nois printar bonitinho dps
 
     #print(n)
-    gasolina_comum = table[table['COMBUSTÍVEL'].str.match('GASOLINA COMUM')]
+    gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb)]
+
     #gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb1)]
     frequency = pd.value_counts(
     pd.cut(x = gasolina_comum['PREÇO VENDA'], bins = k, include_lowest = True))
@@ -50,10 +51,12 @@ def cria_modelo(filename, comb1, comb2):
     #print(type(cols))
     #freq_table_final = freq_table_final[cols]
     
-    freq_table_final.to_csv('modelo_resultado.csv')        
+    comb_name = comb.lower().replace(' ','_')
+    freq_table_final.to_csv(f'modelo_resultado_{comb_name}.csv')        
 
     ## Columns types
     print(freq_table_final)
     
 
-cria_modelo('resultado.csv', 'COMBUSTÍVEL', 'GASOLINA ADITIVADA')
+cria_modelo('resultado.csv', 'DIESEL')
+cria_modelo('resultado.csv', 'DIESEL S10')
