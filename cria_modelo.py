@@ -17,6 +17,7 @@ def cria_modelo(filename, comb):
 
     #print(n)
     gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb)]
+    print(len(gasolina_comum))
 
     #gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb1)]
     frequency = pd.value_counts(
@@ -64,5 +65,5 @@ def cria_modelo(filename, comb):
     print(freq_table_final)
     
 
-cria_modelo('resultado.csv', 'DIESEL')
-cria_modelo('resultado.csv', 'DIESEL S10')
+cria_modelo('resultado_diesel.csv', 'DIESEL')
+cria_modelo('resultado_diesel_s10.csv', 'DIESEL S10')

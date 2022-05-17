@@ -95,7 +95,8 @@ def concatena_csv(lista_combustivel):
         final_table_list.append(parcial_table)
     
     final_table = pd.concat(final_table_list)
-    final_table.to_csv('resultado.csv')
+    final_table.to_csv(f'resultado_{lista_combustivel[0]}.csv')
     print(final_table)
 
-concatena_csv(['diesel', 'diesel_s10'])
+concatena_csv(['diesel'])
+concatena_csv(['diesel_s10'])
