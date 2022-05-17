@@ -21,6 +21,7 @@ def cria_modelo(filename, comb):
     #gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb1)]
     frequency = pd.value_counts(
     pd.cut(x = gasolina_comum['PREÇO VENDA'], bins = k, include_lowest = True))
+# Deu key error no 'range'
     
     percentage = pd.value_counts(
     pd.cut(x=gasolina_comum['PREÇO VENDA'], bins = k, include_lowest = True), normalize = True) * 100
@@ -30,14 +31,19 @@ def cria_modelo(filename, comb):
 
     ## Transforming into DataFrame
     frequency_table = pd.DataFrame(frequency_table)
+    #frequency_table = pd.DataFrame(frequency_table, index=[i for i in range(1, frequency.shape[0] + 1)])
     freq_table_final = frequency_table.copy(deep=False)
 
-
-    ## Reseting index 
-    #freq_table_final.reset_index(inplace=True)
-
+# 
+#meu deus
+    #freq_table_final.sort_values('Range')
+    ## Reseting index
+    frequency_table.reset_index(inplace=True)
+    
     ## Renaming columns
     freq_table_final.rename(columns={'index' : 'Range'}, inplace = True)
+
+    #freq_table_final = freq_table_final.iloc[freq_table_final['Index'].cat.codes.argsort()]
 
     #freq_table_final.insert(1, 'Contagem')
     freq_table_final['Contagem'] = frequency_table['Frequência'].copy()
