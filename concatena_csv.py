@@ -35,14 +35,14 @@ def concatena_tabelas(combustivel):
             new_city_name += f'{palavra} '
         new_city_name = new_city_name[:-1].replace(' ','').replace('_',' ').upper()
 
-        table.insert(0, 'MUNICÍPIO', new_city_name.split("\\")[1])
+        table.insert(0, 'MUNICÍPIO', new_city_name.split("/")[1])
         table.insert(1, 'ESTADO', 'SÃO PAULO')
-        table.insert(2, 'COMBUSTÍVEL', new_city_name.split("\\")[0])
+        table.insert(2, 'COMBUSTÍVEL', new_city_name.split("/")[0])
 
         # Adicionar coluna de metrópole a partir da função extract_cities
         city_list = extract_cities('table.txt')
 
-        if new_city_name.split("\\")[1] in city_list:
+        if new_city_name.split("/")[1] in city_list:
             table.insert(5, 'REGIÃO', 'METRÓPOLE')
         else:
             table.insert(5, 'REGIÃO', 'INTERIOR')
@@ -95,7 +95,7 @@ def concatena_csv(lista_combustivel):
         final_table_list.append(parcial_table)
     
     final_table = pd.concat(final_table_list)
-    final_table.to_csv(f'resultado_{lista_combustivel[0]}.csv')
+    final_table.to_csv(f'./resultados_csv/resultado_{lista_combustivel[0]}.csv')
     print(final_table)
 
 concatena_csv(['diesel'])

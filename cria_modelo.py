@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
+from unidecode import unidecode
 
-def cria_modelo(filename, comb):
+def cria_modelo(filename, coluna, valor):
     table = pd.read_csv(filename)
     
     
@@ -15,8 +16,10 @@ def cria_modelo(filename, comb):
     # Amplitude de cada classe
     c = n/k # -> só pra nois printar bonitinho dps
 
-    #print(n)
-    gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb)]
+    print(n)
+    print(k)
+    print(c)
+    gasolina_comum = table[table[coluna].str.match(valor)]
     print(len(gasolina_comum))
 
     #gasolina_comum = table[table['COMBUSTÍVEL'].str.match(comb1)]
@@ -58,12 +61,13 @@ def cria_modelo(filename, comb):
     #print(type(cols))
     #freq_table_final = freq_table_final[cols]
     
-    comb_name = comb.lower().replace(' ','_')
-    freq_table_final.to_csv(f'modelo_resultado_{comb_name}.csv')        
+    coluna = unidecode(coluna).lower().replace(' ','_')
+    valor = unidecode(valor).lower().replace(' ','_')
+
+    freq_table_final.to_csv(f'./resultados_csv/modelo_resultado_{coluna}_{valor}.csv')        
 
     ## Columns types
     print(freq_table_final)
-    
 
-cria_modelo('resultado_diesel.csv', 'DIESEL')
-cria_modelo('resultado_diesel_s10.csv', 'DIESEL S10')
+cria_modelo('./resultados_csv/resultado_diesel.csv', 'COMBUSTÍVEL', 'DIESEL')
+cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'COMBUSTÍVEL','DIESEL S10')
