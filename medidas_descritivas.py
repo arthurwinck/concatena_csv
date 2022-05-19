@@ -37,40 +37,24 @@ def populate_ponto_medio(filename):
 
     total = sum(lista_freq)
 
-    print(lista_pm)
-    print(lista_freq)
-
     #Cria o dataframe, deve ser mais fácil calcular a partir disso
     table_freq_pm = pd.DataFrame(list(zip(lista_freq,lista_pm)))
 
-    
+    print(lista_freq)
+    print(lista_pm)
+
+    print('\n------------- MEDIDAS AGRUPADAS ------------------')
     #Média
     media_pond = sum(map(lambda x, y: x*y, lista_freq, lista_pm))/total
-    print(f"MÉDIA: {sum(map(lambda x, y: x*y, lista_freq, lista_pm))/total}")
-    #Moda
-    print(f"MODA: {lista_pm[lista_freq.index(max(lista_freq))]}")
-    #Mediana
-    print(f"MEDIANA: {table_freq_pm[0].median()}")
+    print(f"MÉDIA: {media_pond}")
     
-    # half = total/2
-    # lista_half = []
-    # if half % 2 == 0:
-    #     lista_half.append(half)
-    #     lista_half.append(half+1)
-    # else:
-    #     lista_half.append((half-1)/2+1)
+    #Moda -- Checar se a moda é única
+    moda = lista_pm[lista_freq.index(max(lista_freq))]
+    print(f"MODA: {moda}")
     
-    # sum_half = 0
-    # for i, freq in enumerate(lista_freq):
-    #     if len(lista_half) > 1:
-    #         sum_half += freq
-            
-    #         if sum_half > 
-
-    # lista_pontos_medios = [pm1, pm2, pm3]
-    # lista_freq -> [1, 2, 5] = 
-
+    #Mediana -- Alterar para cálculo em relação ao gráfico
     half = total/2 # --> total = 6, half = 3,4
+    mediana = 0
 
     for i, freq in enumerate(lista_freq):
         half -= freq
@@ -78,27 +62,45 @@ def populate_ponto_medio(filename):
         if half <= 0:
             if (total/2) // 2 == 0:
                 if half == 0:
+                    classe_mediana = i
                     print(f"MEDIANA: {(lista_pm[i]+lista_pm[i+1])/2}") 
                     break
                 else:
+                    classe_mediana = i                   
                     print(f"MEDIANA: {lista_pm[i]}")
                     break 
             else:
+                classe_mediana = i
                 print(f"MEDIANA: {lista_pm[i]}")
                 break 
 
-    # def std(list):
-    #avg = sum(list)/float(len(list))
-    #return math.sqrt(sum(map(lambda x: (x-avg)**2,list))/len(list))
+
+    ind = classe_mediana
+    inferior = lista_pm[ind] - (maior-menor)/2
+    print(inferior)
+    
 
     variancia = 0
-
     for i, num in enumerate(lista_freq):
         variancia += num*(lista_pm[i] - media_pond)**2
 
     print(f"VARIÂNCIA: {variancia/total}")
     desv = np.sqrt(variancia/total)
     print(f"DESVIÃO PADRÃO: {desv}")
+
+    cv = desv/media_pond
+    print(f"CV: {cv}")
+
+    #Assimetria tem que pegar a moda, não sei se tá correto por causa do cálculo da moda
+    assimetria = (media_pond - moda)/desv
+    print(f'ASSIMETRIA: {assimetria}')
+
+    #Isso aqui tá zoado 100%
+    #Mediana não é "ajustada" pode ser por isso que tá zoado
+    assimetria2 = (3*media_pond - 2*mediana)/desv
+    print(f'ASSIMETRIA S/MODA: {assimetria2}')
+
+    print('\n-------------------------------')
 
     # Obtenha, do(s) modelo(s) empírico(s), as principais estatísticas descritivas (valor central:
     #  a média, a mediana e a moda (se existir); dispersão: variância, desvio padrão, erro padrão da média
@@ -109,3 +111,12 @@ def populate_ponto_medio(filename):
 
 #Altera aqui gugu o path pro modelo que tu quer importar
 populate_ponto_medio('./csvs_montados/media_diesel_s10.csv')
+
+table = pd.read_csv('./resultados_csv/resultado_diesel_s10.csv')
+
+print('\n------------- MEDIDAS NÃO-AGRUPADAS ------------------')
+print(f"mediana: {table['PREÇO VENDA'].median()}")
+print(f"moda: {table['PREÇO VENDA'].mode()}")
+print(f"cv: {table['PREÇO VENDA'].std()/table['PREÇO VENDA'].mean()}")
+print(table['PREÇO VENDA'].describe())
+print('-------------------------------\n')
