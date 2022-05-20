@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
+from sqlalchemy import column
 
-def populate_ponto_medio(filename):
-    file = open(filename)
+def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
+    file = open(tabela_modelo)
     lista_pm = []
     lista_freq = []
+    lista_intervalos = []
 
     for i, line in enumerate(file.readlines()):
         if i == 0:
@@ -23,7 +25,7 @@ def populate_ponto_medio(filename):
         lista_freq.append(freq)
 
         classe = [lista_colunas[0].replace('"','').replace('(',''),lista_colunas[1].replace('"','').replace(']','')]
-        print(classe)
+        #print(classe)
 
         try:
             menor = float(classe[0])
@@ -31,6 +33,7 @@ def populate_ponto_medio(filename):
             soma = (maior-menor)/2
             pm = menor+soma
             lista_pm.append(np.round(pm, decimals=3))
+            lista_intervalos.append((menor,maior))
         except Exception as e:
             raise e
 
@@ -40,17 +43,17 @@ def populate_ponto_medio(filename):
     #Cria o dataframe, deve ser mais fácil calcular a partir disso
     table_freq_pm = pd.DataFrame(list(zip(lista_freq,lista_pm)))
 
-    print(lista_freq)
-    print(lista_pm)
+    #print(lista_freq)
+    #print(lista_pm)
 
-    print('\n------------- MEDIDAS AGRUPADAS ------------------')
+    #print('\n------------- MEDIDAS AGRUPADAS ------------------')
     #Média
     media_pond = sum(map(lambda x, y: x*y, lista_freq, lista_pm))/total
-    print(f"MÉDIA: {media_pond}")
+    #print(f"MÉDIA: {media_pond}")
     
     #Moda -- Checar se a moda é única
     moda = lista_pm[lista_freq.index(max(lista_freq))]
-    print(f"MODA: {moda}")
+    #print(f"MODA: {moda}")
     
     #Mediana -- Alterar para cálculo em relação ao gráfico
     half = total/2 # --> total = 6, half = 3,4
@@ -63,22 +66,38 @@ def populate_ponto_medio(filename):
             if (total/2) // 2 == 0:
                 if half == 0:
                     classe_mediana = i
-                    print(f"MEDIANA: {(lista_pm[i]+lista_pm[i+1])/2}") 
                     break
                 else:
-                    classe_mediana = i                   
-                    print(f"MEDIANA: {lista_pm[i]}")
+                    classe_mediana = i
                     break 
             else:
                 classe_mediana = i
-                print(f"MEDIANA: {lista_pm[i]}")
                 break 
 
 
-    ind = classe_mediana
-    inferior = lista_pm[ind] - (maior-menor)/2
-    print(inferior)
+    #P(X<=~X) = 0,5
+    # Usar a frequência acumulada -> vai somando desde a primeira classe até 100%
+    #6.63 -> 6.84 (classe que possui os 50%) possui 18,73
+    #Anterior a essa classe
     
+    #Cálculo da mediana
+    #int_maior, int_menor e a freq vem da classe que possui os 50%
+    #(int_maior - int_menor) / freq da classe (%) = (~x - int_menor)/50% - freq_acumulada (%)
+    lista_freq_por = list(map(lambda x: x/total, lista_freq))
+    
+    lista_freq_ac = [0]*len(lista_freq_por)
+    for i, freq in enumerate(lista_freq_por):
+        lista_freq_ac[i] = sum(lista_freq_por[:i]) + lista_freq_por[i]
+
+    
+    ind = classe_mediana
+    dif = (maior-menor)/2
+    inferior = lista_intervalos[ind][0] 
+    superior = lista_intervalos[ind][1]
+    #print(f"inferior: {inferior} superior: {superior}")
+
+    mediana = (0.5 - lista_freq_ac[ind-1])*(superior - inferior)/lista_freq_por[ind] + inferior 
+    print(f"MEDIANA: {mediana}")
 
     variancia = 0
     for i, num in enumerate(lista_freq):
@@ -106,17 +125,45 @@ def populate_ponto_medio(filename):
     #  a média, a mediana e a moda (se existir); dispersão: variância, desvio padrão, erro padrão da média
     #  e coeficiente de variação; forma: assimetria) para analisar as situações desejadas. 
 
-    #Altera aqui gugu o path pro modelo que tu quer exportar
-    table_freq_pm.to_csv('./resultados_csv/tabela_pm_freq.csv')
+    # #Altera aqui gugu o path pro modelo que tu quer exportar!!!!
+    # table_freq_pm.to_csv('./resultados_csv/tabela_pm_freq.csv')
 
-#Altera aqui gugu o path pro modelo que tu quer importar
-populate_ponto_medio('./csvs_montados/media_diesel_s10.csv')
+    table = pd.read_csv(tabela_simples)
 
-table = pd.read_csv('./resultados_csv/resultado_diesel_s10.csv')
+    # print('\n------------- MEDIDAS NÃO-AGRUPADAS ------------------')
+    # print(f"mediana: {table['PREÇO VENDA'].median()}")
+    # print(f"moda: {table['PREÇO VENDA'].mode()}")
+    # print(f"cv: {table['PREÇO VENDA'].std()/table['PREÇO VENDA'].mean()}")
+    # print(table['PREÇO VENDA'].describe())
+    # print('-------------------------------\n')
 
-print('\n------------- MEDIDAS NÃO-AGRUPADAS ------------------')
-print(f"mediana: {table['PREÇO VENDA'].median()}")
-print(f"moda: {table['PREÇO VENDA'].mode()}")
-print(f"cv: {table['PREÇO VENDA'].std()/table['PREÇO VENDA'].mean()}")
-print(table['PREÇO VENDA'].describe())
-print('-------------------------------\n')
+
+    tp = table['PREÇO VENDA']
+
+    data = {'Medidas': ['MÉDIA', 'MODA', 'MEDIANA', 'VARIÂNCIA', 'DESVIO', 'CV', 'ASSIMETRIA'],
+            'Dados Agrupados': [media_pond, moda, mediana, variancia, desv, cv, assimetria],
+            'Dados Não-Agrupados': [tp.mean(), tp.mode()[0], tp.median(), tp.var(), tp.std(), tp.std()/tp.mean(), (tp.mean()-tp.mode()[0])/tp.std()]
+            }
+
+    
+    column_erro = []
+    for i, item in enumerate(data['Dados Agrupados']):
+        column_erro.append(np.round(100*(abs(data['Dados Não-Agrupados'][i] - item))/data['Dados Não-Agrupados'][i], 3))
+        data['Dados Agrupados'][i] = np.round(data['Dados Agrupados'][i], 3)
+        data['Dados Não-Agrupados'][i] = np.round(data['Dados Não-Agrupados'][i], 3)
+
+
+    data['Erro Relativo'] = column_erro
+
+    table_result = pd.DataFrame(data)
+    
+
+
+    print(table_result)
+    table_result.to_csv(tabela_export)
+
+# tabela_modelo -> tabela do modelo empírico criado a partir dos dados simples
+# tabela_simples -> tabela de dados não agrupados para usar como referência
+# tabela_export -> tabela que será exportada com as medidas descritivas e os erros
+# populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export)
+populate_ponto_medio('./csvs_montados/media_diesel_s10.csv', './resultados_csv/resultado_diesel_s10.csv', './resultados_csv/medidas_desc_teste.csv')
