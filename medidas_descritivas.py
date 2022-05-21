@@ -52,7 +52,9 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
     #print(f"MÉDIA: {media_pond}")
     
     #Moda -- Checar se a moda é única
-    moda = lista_pm[lista_freq.index(max(lista_freq))]
+    ind_moda = lista_freq.index(max(lista_freq))
+    l = lista_intervalos[ind_moda][0]
+    moda = l + (lista_freq[ind_moda] - lista_freq[ind_moda-1])/(2*lista_freq[ind_moda] - lista_freq[ind_moda-1] - lista_freq[ind_moda+1])*(lista_intervalos[ind_moda][1] - lista_intervalos[ind_moda][0])
     #print(f"MODA: {moda}")
     
     #Mediana -- Alterar para cálculo em relação ao gráfico
