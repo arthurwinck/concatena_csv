@@ -97,29 +97,35 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
     #print(f"inferior: {inferior} superior: {superior}")
 
     mediana = (0.5 - lista_freq_ac[ind-1])*(superior - inferior)/lista_freq_por[ind] + inferior 
-    print(f"MEDIANA: {mediana}")
+    #print(f"MEDIANA: {mediana}")
 
-    variancia = 0
-    for i, num in enumerate(lista_freq):
-        variancia += num*(lista_pm[i] - media_pond)**2
+    # variancia = 0
+    # for i, num in enumerate(lista_freq):
+    #     variancia += num*(lista_pm[i] - media_pond)**2
 
-    print(f"VARIÂNCIA: {variancia/total}")
-    desv = np.sqrt(variancia/total)
-    print(f"DESVIÃO PADRÃO: {desv}")
+    variancia = sum(map(lambda x, y: x*(y - media_pond)**2, lista_freq, lista_pm))/total
+    media_pond = sum(map(lambda x, y: x*y, lista_freq, lista_pm))/total
+
+
+    #print(f"VARIÂNCIA: {variancia/total}")
+    #print(f"VARIÂNCIA: {variancia_teste/total}")
+
+    desv = np.sqrt(variancia)
+    #print(f"DESVIÃO PADRÃO: {desv}")
 
     cv = desv/media_pond
-    print(f"CV: {cv}")
+    #print(f"CV: {cv}")
 
     #Assimetria tem que pegar a moda, não sei se tá correto por causa do cálculo da moda
     assimetria = (media_pond - moda)/desv
-    print(f'ASSIMETRIA: {assimetria}')
+    #print(f'ASSIMETRIA: {assimetria}')
 
     #Isso aqui tá zoado 100%
     #Mediana não é "ajustada" pode ser por isso que tá zoado
     assimetria2 = (3*media_pond - 2*mediana)/desv
-    print(f'ASSIMETRIA S/MODA: {assimetria2}')
+    #print(f'ASSIMETRIA S/MODA: {assimetria2}')
 
-    print('\n-------------------------------')
+    #print('\n-------------------------------')
 
     # Obtenha, do(s) modelo(s) empírico(s), as principais estatísticas descritivas (valor central:
     #  a média, a mediana e a moda (se existir); dispersão: variância, desvio padrão, erro padrão da média
@@ -160,6 +166,9 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
 
 
     print(table_result)
+    #(media_pond - moda)/desv
+    print(f"Agrupado: {assimetria} = ({media_pond} - {moda})/{desv}")
+    print(f"Não-agrupado: {(tp.mean()-tp.mode()[0])/tp.std()} = ({tp.mean()}-{tp.mode()[0]})/{tp.std()}")
     table_result.to_csv(tabela_export)
 
 # tabela_modelo -> tabela do modelo empírico criado a partir dos dados simples
