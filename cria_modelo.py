@@ -69,5 +69,5 @@ def cria_modelo(filename, coluna, valor):
     ## Columns types
     print(freq_table_final)
 
-cria_modelo('./resultados_csv/resultado_diesel.csv', 'COMBUSTÍVEL', 'DIESEL')
-cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'COMBUSTÍVEL','DIESEL S10')
+cria_modelo('./resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL')
+#cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'COMBUSTÍVEL','DIESEL S10')

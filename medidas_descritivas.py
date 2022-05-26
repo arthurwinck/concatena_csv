@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sqlalchemy import column
 
-def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
+def populate_ponto_medio(nome, tabela_modelo, tabela_simples, coluna, valor):
     file = open(tabela_modelo)
     lista_pm = []
     lista_freq = []
@@ -54,7 +54,11 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
     #Moda -- Checar se a moda é única
     ind_moda = lista_freq.index(max(lista_freq))
     l = lista_intervalos[ind_moda][0]
-    moda = l + (lista_freq[ind_moda] - lista_freq[ind_moda-1])/(2*lista_freq[ind_moda] - lista_freq[ind_moda-1] - lista_freq[ind_moda+1])*(lista_intervalos[ind_moda][1] - lista_intervalos[ind_moda][0])
+
+    if ind_moda < len(lista_freq) - 1:
+        moda = l + (lista_freq[ind_moda] - lista_freq[ind_moda-1])/(2*lista_freq[ind_moda] - lista_freq[ind_moda-1] - lista_freq[ind_moda+1])*(lista_intervalos[ind_moda][1] - lista_intervalos[ind_moda][0])
+    else:
+        moda = l + (lista_freq[ind_moda] - lista_freq[ind_moda-1])/(2*lista_freq[ind_moda] - lista_freq[ind_moda-1] - lista_freq[ind_moda])*(lista_intervalos[ind_moda][1] - lista_intervalos[ind_moda][0])
     #print(f"MODA: {moda}")
     
     #Mediana -- Alterar para cálculo em relação ao gráfico
@@ -124,7 +128,7 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
 
     #Isso aqui tá zoado 100%
     #Mediana não é "ajustada" pode ser por isso que tá zoado
-    assimetria2 = (3*media_pond - 2*mediana)/desv
+    assimetria2 = 3*(media_pond - mediana)/desv
     #print(f'ASSIMETRIA S/MODA: {assimetria2}')
 
     #print('\n-------------------------------')
@@ -138,6 +142,11 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
 
     table = pd.read_csv(tabela_simples)
 
+    if coluna != None and valor != None: 
+        table = table[table[coluna]==valor]
+
+    print(table)
+
     # print('\n------------- MEDIDAS NÃO-AGRUPADAS ------------------')
     # print(f"mediana: {table['PREÇO VENDA'].median()}")
     # print(f"moda: {table['PREÇO VENDA'].mode()}")
@@ -148,9 +157,9 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
 
     tp = table['PREÇO VENDA']
 
-    data = {'Medidas': ['MÉDIA', 'MODA', 'MEDIANA', 'VARIÂNCIA', 'DESVIO', 'CV', 'ASSIMETRIA'],
-            'Dados Agrupados': [media_pond, moda, mediana, variancia, desv, cv, assimetria],
-            'Dados Não-Agrupados': [tp.mean(), tp.mode()[0], tp.median(), tp.var(), tp.std(), tp.std()/tp.mean(), (tp.mean()-tp.mode()[0])/tp.std()]
+    data = {'Medidas': ['MÉDIA (R$)', 'MODA (R$)', 'MEDIANA (R$)', 'VARIÂNCIA (R$)^2', 'DESVIO (R$)', 'CV (ADIM)', 'ASSIMETRIA (ADIM)', 'ASSIMETRIA S/MODA (ADIM)'],
+            'Dados Agrupados': [media_pond, moda, mediana, variancia, desv, cv, assimetria, assimetria2],
+            'Dados Não-Agrupados': [tp.mean(), tp.mode()[0], tp.median(), tp.var(), tp.std(), tp.std()/tp.mean(), (tp.mean()-tp.mode()[0])/tp.std(), (tp.mean()-tp.mode()[0])/tp.std()]
             }
 
     
@@ -171,10 +180,10 @@ def populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export):
     #(media_pond - moda)/desv
     print(f"Agrupado: {assimetria} = ({media_pond} - {moda})/{desv}")
     print(f"Não-agrupado: {(tp.mean()-tp.mode()[0])/tp.std()} = ({tp.mean()}-{tp.mode()[0]})/{tp.std()}")
-    table_result.to_csv(tabela_export)
+    table_result.to_csv(f'./medidas_descritivas/medidas_descritivas_{nome}.csv')
 
 # tabela_modelo -> tabela do modelo empírico criado a partir dos dados simples
 # tabela_simples -> tabela de dados não agrupados para usar como referência
 # tabela_export -> tabela que será exportada com as medidas descritivas e os erros
 # populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export)
-populate_ponto_medio('./csvs_montados/media_diesel_s10.csv', './resultados_csv/resultado_diesel_s10.csv', './resultados_csv/medidas_desc_teste.csv')
+populate_ponto_medio('diesel_nacional', './csvs_montados/modelo_resultado_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL')
