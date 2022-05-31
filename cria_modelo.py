@@ -73,7 +73,7 @@ def cria_modelo(filename, coluna, valor, comb):
 cria_modelo('./resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL', 'DIESEL')
 cria_modelo('./resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'OUTRO', 'DIESEL')
 cria_modelo('./resultados_csv/resultado_diesel.csv', 'REGIÃO', 'INTERIOR', 'DIESEL')
-cria_modelo('./resultados_csv/resultado_diesel.csv', 'REGIÃO', 'METRÓPOLE', 'DIESEL')
+cria_modelo('./resultados_csv/resultado_diesel_novo.csv', 'REGIÃO', 'METRÓPOLE', 'DIESEL')
 
 
 

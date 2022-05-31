@@ -39,13 +39,20 @@ def concatena_tabelas(combustivel):
         table.insert(1, 'ESTADO', 'SÃO PAULO')
         table.insert(2, 'COMBUSTÍVEL', new_city_name.split("/")[0])
 
-        # Adicionar coluna de metrópole a partir da função extract_cities
-        city_list = extract_cities('table.txt')
+        table['REGIÃO'] = 'QUALQUER'
+        for j in range(len(table['REGIÃO'])):
+            if table['MUNICÍPIO'][j] in ['GUARULHOS','ITAQUAQUECETUBA','ITAPEVI']:
+                table['REGIÃO'][j] = "METRÓPOLE"
+            else:
+                table['REGIÃO'][j] = "INTERIOR"
 
-        if new_city_name.split("/")[1] in city_list:
-            table.insert(5, 'REGIÃO', 'METRÓPOLE')
-        else:
-            table.insert(5, 'REGIÃO', 'INTERIOR')
+        # # Adicionar coluna de metrópole a partir da função extract_cities
+        # city_list = extract_cities('table.txt')
+
+        # if new_city_name.split("/")[1] in city_list:
+        #     table.insert(5, 'REGIÃO', 'METRÓPOLE')
+        # else:
+        #     table.insert(5, 'REGIÃO', 'INTERIOR')
 
 
         # Renomear bandeiras para entrar no padrão de nacional ou outro
@@ -95,7 +102,7 @@ def concatena_csv(lista_combustivel):
         final_table_list.append(parcial_table)
     
     final_table = pd.concat(final_table_list)
-    final_table.to_csv(f'./resultados_csv/resultado_{lista_combustivel[0]}.csv')
+    final_table.to_csv(f'./resultados_csv/resultado_{lista_combustivel[0]}_novo.csv')
     print(final_table)
 
 concatena_csv(['diesel'])
