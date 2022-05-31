@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from unidecode import unidecode
 
-def cria_modelo(filename, coluna, valor):
+def cria_modelo(filename, coluna, valor, comb):
     table = pd.read_csv(filename)
     
     
@@ -63,11 +63,26 @@ def cria_modelo(filename, coluna, valor):
     
     coluna = unidecode(coluna).lower().replace(' ','_')
     valor = unidecode(valor).lower().replace(' ','_')
+    comb = unidecode(comb).lower().replace(' ','_')
 
-    freq_table_final.to_csv(f'./resultados_csv/modelo_resultado_{coluna}_{valor}.csv')        
+    freq_table_final.to_csv(f'./resultados_csv/modelo_resultado_{comb}_{coluna}_{valor}.csv')        
 
     ## Columns types
     print(freq_table_final)
 
-cria_modelo('./resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL')
+cria_modelo('./resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL', 'DIESEL')
+cria_modelo('./resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'OUTRO', 'DIESEL')
+cria_modelo('./resultados_csv/resultado_diesel.csv', 'REGIÃO', 'INTERIOR', 'DIESEL')
+cria_modelo('./resultados_csv/resultado_diesel.csv', 'REGIÃO', 'METRÓPOLE', 'DIESEL')
+
+
+
+cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'BANDEIRA', 'NACIONAL', 'DIESEL S10')
+cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'BANDEIRA', 'OUTRO', 'DIESEL S10')
+cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'REGIÃO', 'INTERIOR', 'DIESEL S10')
+cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'REGIÃO', 'METRÓPOLE', 'DIESEL S10')
+
+
+
+
 #cria_modelo('./resultados_csv/resultado_diesel_s10.csv', 'COMBUSTÍVEL','DIESEL S10')

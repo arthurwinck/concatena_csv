@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sqlalchemy import column
+import glob
 
 def populate_ponto_medio(nome, tabela_modelo, tabela_simples, coluna, valor):
     file = open(tabela_modelo)
@@ -180,10 +180,95 @@ def populate_ponto_medio(nome, tabela_modelo, tabela_simples, coluna, valor):
     #(media_pond - moda)/desv
     print(f"Agrupado: {assimetria} = ({media_pond} - {moda})/{desv}")
     print(f"Não-agrupado: {(tp.mean()-tp.mode()[0])/tp.std()} = ({tp.mean()}-{tp.mode()[0]})/{tp.std()}")
+    
+    # !!!!! - Caso queria exportar para csv
     table_result.to_csv(f'./medidas_descritivas/medidas_descritivas_{nome}.csv')
+
+
+    #Criação da tabela de variáveis
+    k = len(lista_intervalos)
+    amplitude_total = table['PREÇO VENDA'].max() - table['PREÇO VENDA'].min()
+    c = abs(lista_intervalos[0][1] - lista_intervalos[0][0])
+    print(f"R: {amplitude_total} / K: {k} / C: {c}")
+
+    name = ''
+
+    for i in range(len(nome.split('_'))):
+        name += nome.split('_')[i].capitalize() + ' '        
+
+    name = name[:-1]
+
+    #name = nome.split('_')[0].capitalize() + ' ' + nome.split('_')[1].capitalize()
+
+    return {'k': k, 'r': amplitude_total, 'c': c, 'name': name}
 
 # tabela_modelo -> tabela do modelo empírico criado a partir dos dados simples
 # tabela_simples -> tabela de dados não agrupados para usar como referência
 # tabela_export -> tabela que será exportada com as medidas descritivas e os erros
 # populate_ponto_medio(tabela_modelo, tabela_simples, tabela_export)
-populate_ponto_medio('diesel_nacional', './csvs_montados/modelo_resultado_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL')
+populate_ponto_medio('diesel', './resultados_csv/modelo_resultado_combustivel_diesel.csv', './resultados_csv/resultado_diesel.csv', None, None)
+populate_ponto_medio('diesel_s10', './resultados_csv/modelo_resultado_combustivel_diesel_s10.csv', './resultados_csv/resultado_diesel_s10.csv', None, None)
+
+
+
+def cria_tabela_var():
+    lista_dic = []
+
+    dic = populate_ponto_medio('diesel_nacional', './resultados_csv/modelo_resultado_diesel_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL')
+    lista_dic.append(dic)
+
+    dic = populate_ponto_medio('diesel_outro', './resultados_csv/modelo_resultado_diesel_bandeira_outro.csv', './resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'OUTRO')
+    lista_dic.append(dic)
+
+    dic = populate_ponto_medio('diesel_interior', './resultados_csv/modelo_resultado_diesel_regiao_interior.csv', './resultados_csv/resultado_diesel.csv', 'REGIÃO', 'INTERIOR')
+    lista_dic.append(dic)
+    dic = populate_ponto_medio('diesel_metropole', './resultados_csv/modelo_resultado_diesel_regiao_metropole.csv', './resultados_csv/resultado_diesel.csv', 'REGIÃO', 'METRÓPOLE')
+    lista_dic.append(dic)
+
+    ## --------------
+
+    dic = populate_ponto_medio('diesel_s10_nacional', './resultados_csv/modelo_resultado_diesel_s10_bandeira_nacional.csv', './resultados_csv/resultado_diesel_s10.csv', 'BANDEIRA', 'NACIONAL')
+    lista_dic.append(dic)
+
+    dic = populate_ponto_medio('diesel_s10_outro', './resultados_csv/modelo_resultado_diesel_s10_bandeira_outro.csv', './resultados_csv/resultado_diesel_s10.csv', 'BANDEIRA', 'OUTRO')
+    lista_dic.append(dic)
+
+    dic = populate_ponto_medio('diesel_s10_interior', './resultados_csv/modelo_resultado_diesel_s10_regiao_interior.csv', './resultados_csv/resultado_diesel_s10.csv', 'REGIÃO', 'INTERIOR')
+    lista_dic.append(dic)
+
+    dic = populate_ponto_medio('diesel_s10_metropole', './resultados_csv/modelo_resultado_diesel_s10_regiao_metropole.csv', './resultados_csv/resultado_diesel_s10.csv', 'REGIÃO', 'METRÓPOLE')
+    lista_dic.append(dic)
+
+    lista_name = []
+    lista_k = []
+    lista_c = []
+    lista_r = []
+
+
+    for item in lista_dic:
+        lista_name.append(item['name'])
+        lista_k.append(item['k'])
+        lista_c.append(item['c'])
+        lista_r.append(item['r'])
+
+    df = pd.DataFrame({'Nome': lista_name, 'Amplitude Total': lista_r, 'Número de Classes': lista_k, 'Amplitude de Classe': lista_c})
+
+    df.to_csv('./tabelas_variaveis/tabela_variavel.csv')
+
+#cria_tabela_var()
+
+
+# def cria_tabela_variaveis(self):
+#     lista_dic = []
+
+#     dic = populate_ponto_medio('diesel_nacional', './csvs_montados/modelo_resultado_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'REGIÃO', 'INTERIOR')
+
+#     dic = populate_ponto_medio('diesel_nacional', './csvs_montados/modelo_resultado_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'REGIÃO', 'INTERIOR')
+
+#     dic = populate_ponto_medio('diesel_nacional', './csvs_montados/modelo_resultado_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'NACIONAL')
+
+#     dic = populate_ponto_medio('diesel_nacional', './csvs_montados/modelo_resultado_bandeira_nacional.csv', './resultados_csv/resultado_diesel.csv', 'BANDEIRA', 'OUTRO')
+
+#     lista_dic.append(dic)
+
+    
