@@ -187,7 +187,7 @@ def populate_ponto_medio(nome, tabela_modelo, tabela_simples, coluna, valor):
     # !!!!! - Caso queria exportar para csv
 
     if coluna != None and valor != None:
-        table_result.to_csv(f"./medidas_descritivas/medidas_descritivas_{unidecode(coluna.replace(' ','_').lower())}_{unidecode(valor.replace(' ','_').lower())}.csv")
+        table_result.to_csv(f"./medidas_descritivas/medidas_descritivas_{nome}_{unidecode(coluna.replace(' ','_').lower())}_{unidecode(valor.replace(' ','_').lower())}.csv")
     else:
         table_result.to_csv(f"./medidas_descritivas/medidas_descritivas_{nome}.csv")
 

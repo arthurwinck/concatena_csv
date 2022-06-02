@@ -86,4 +86,4 @@ def analise_exploratoria(filename):
     print(outliers_ext_inf.dropna())
 
 
-analise_exploratoria('./resultados_csv/resultado_diesel_s10.csv')
+analise_exploratoria('./resultados_csv/resultado_diesel_regiao_metropole_novo.csv')
